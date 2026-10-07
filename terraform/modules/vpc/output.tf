@@ -1,6 +1,6 @@
 output "vpc_id" {
-    description = "ID of the vpc"
-    value = aws_vpc.this.id
+  description = "ID of the vpc"
+  value       = aws_vpc.this.id
 }
 
 output "public_subnet_id" {
@@ -9,8 +9,8 @@ output "public_subnet_id" {
 }
 
 output "private_app_subnet_id" {
-    description = "ID of the private app subnet"
-    value = aws_subnet.private_app.id
+  description = "ID of the private app subnet"
+  value       = aws_subnet.private_app.id
 }
 
 output "private_db_subnet_id" {

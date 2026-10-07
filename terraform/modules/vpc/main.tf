@@ -1,6 +1,6 @@
 resource "aws_vpc" "this" {
-   cidr_block = var.vpc_cidr 
-   tags = {
+  cidr_block = var.vpc_cidr
+  tags = {
     Name = "${var.project_name}-vpc"
   }
 }
@@ -16,14 +16,14 @@ resource "aws_subnet" "public" {
   }
 }
 
-resource "aws_subnet" "private_app"{
-    vpc_id = aws_vpc.this.id
-    cidr_block = var.private_app_subnet_cidr
-    availability_zone = "us-east-2a"
+resource "aws_subnet" "private_app" {
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = var.private_app_subnet_cidr
+  availability_zone = "us-east-2a"
 
-    tags = {
-        Name = "${var.project_name}-private-subnet-app"
-    }
+  tags = {
+    Name = "${var.project_name}-private-subnet-app"
+  }
 }
 
 resource "aws_subnet" "private_db" {

@@ -34,13 +34,13 @@ module "ec2" {
 }
 
 module "rds" {
-  source                  = "./modules/rds"
-  project_name            = var.project_name
-  instance_class          = var.db_instance_class
-  private_db_subnet_id    = module.vpc.private_db_subnet_id
-  private_db_subnet_2_id  = module.vpc.private_db_subnet_2_id
-  db_sg_id                = module.security.db_sg_id
-  db_name                 = var.db_name
-  db_username             = var.db_username
-  db_password             = var.db_password
+  source                 = "./modules/rds"
+  project_name           = var.project_name
+  instance_class         = var.db_instance_class
+  private_db_subnet_id   = module.vpc.private_db_subnet_id
+  private_db_subnet_2_id = module.vpc.private_db_subnet_2_id
+  db_sg_id               = module.security.db_sg_id
+  db_name                = var.db_name
+  db_username            = var.db_username
+  db_password            = var.db_password
 }
