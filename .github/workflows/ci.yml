@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the code
@@ -20,7 +20,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install flake8
+          pip install flake8 pytest
 
-      - name: Lint the app
-        run: flake8 app --max-line-length=200
+      - name: Lint
+        run: flake8 app tests --max-line-length=200
+
+      - name: Run tests
+        run: pytest tests
