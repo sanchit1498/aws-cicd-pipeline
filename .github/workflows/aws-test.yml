@@ -1,0 +1,21 @@
+name: AWS connection test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  whoami:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get temporary AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::816832911710:role/github-actions-cicd-role
+          aws-region: us-east-2
+
+      - name: Who am I?
+        run: aws sts get-caller-identity
