@@ -41,6 +41,7 @@ jobs:
         run: terraform init -input=false
 
       - name: Terraform plan
+        shell: bash
         run: terraform plan -input=false -no-color | tee plan.txt
 
       - name: Comment the plan on the pull request
