@@ -48,3 +48,23 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
+  security-scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install scanners
+        run: pip install checkov pip-audit
+
+      - name: Scan Python dependencies
+        run: pip-audit -r requirements.txt
+
+      - name: Scan Terraform for security issues
+        run: checkov -d terraform --quiet --soft-fail
