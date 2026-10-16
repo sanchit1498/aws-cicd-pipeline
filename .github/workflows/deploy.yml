@@ -1,0 +1,61 @@
+cat > .github/workflows/deploy.yml << 'EOF'
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "What should this run do?"
+        type: choice
+        options:
+          - apply
+          - destroy
+        default: apply
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: terraform-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      TF_VAR_my_ip: ${{ secrets.MY_IP }}
+      TF_VAR_ami_id: ${{ secrets.AMI_ID }}
+      TF_VAR_key_name: ${{ secrets.KEY_NAME }}
+      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::816832911710:role/github-actions-deploy-role
+          aws-region: us-east-2
+
+      - name: Terraform init
+        run: terraform init -input=false
+
+      - name: Terraform apply
+        if: github.event_name == 'push' || inputs.action == 'apply'
+        run: terraform apply -auto-approve -input=false
+
+      - name: Terraform destroy
+        if: github.event_name == 'workflow_dispatch' && inputs.action == 'destroy'
+        run: terraform destroy -auto-approve -input=false
+EOF
