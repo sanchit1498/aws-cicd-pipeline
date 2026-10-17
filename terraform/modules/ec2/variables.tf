@@ -29,3 +29,24 @@ variable "key_name" {
   description = "Name of the existing EC2 key pair for SSH access"
   type        = string
 }
+
+variable "db_host" {
+  description = "Database hostname (no port)"
+  type        = string
+}
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+}
+
+variable "db_user" {
+  description = "Database username"
+  type        = string
+}
+
+variable "db_password" {
+  description = "Database password"
+  type        = string
+  sensitive   = true
+}
