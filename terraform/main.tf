@@ -31,6 +31,10 @@ module "ec2" {
   subnet_id     = module.vpc.public_subnet_id
   web_sg_id     = module.security.web_sg_id
   key_name      = var.key_name
+  db_host       = split(":", module.rds.db_endpoint)[0]
+  db_name       = var.db_name
+  db_user       = var.db_username
+  db_password   = var.db_password
 }
 
 module "rds" {
